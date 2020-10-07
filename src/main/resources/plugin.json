@@ -1,0 +1,5 @@
+{
+  "main" : "com.krews.plugin.nitro.main",
+  "name" : "Nitro Websockets",
+  "author" : "Krews"
+}
