@@ -8,12 +8,16 @@ import com.krews.plugin.nitro.websockets.handlers.MessageInterceptorHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 
 public class NetworkChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     public void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline().addLast("logger", new LoggingHandler());
+
+        ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(60, 30, 0));
+        ch.pipeline().addAfter("idleStateHandler", "idleEventHandler", new IdleTimeoutHandler());
 
         ch.pipeline().addLast("messageInterceptor", new MessageInterceptorHandler());
 

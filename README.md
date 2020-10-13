@@ -1,7 +1,7 @@
 # NitroWebsockets
 
 ## What is NitroWebsockets? ##
-NitroWebsockets is a plugin that adds Nitro HTML5 Client compatibility to any hotel running Arcturus MS 2.4.0 and above.
+NitroWebsockets is a plugin that adds Nitro HTML5 Client compatibility to any hotel running Arcturus MS 2.5.0 and above.
 
 ## How do I configure the plugin?
 Startup the plugin so it generates the required entries under your `emulator_settings` table. The following fields will be generated:
