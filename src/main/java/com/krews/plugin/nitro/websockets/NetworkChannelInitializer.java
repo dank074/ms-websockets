@@ -4,6 +4,7 @@ import com.eu.habbo.messages.PacketManager;
 import com.eu.habbo.networking.gameserver.decoders.*;
 import com.eu.habbo.networking.gameserver.encoders.GameServerMessageEncoder;
 import com.eu.habbo.networking.gameserver.encoders.GameServerMessageLogger;
+import com.eu.habbo.networking.gameserver.handlers.IdleTimeoutHandler;
 import com.krews.plugin.nitro.websockets.handlers.MessageInterceptorHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
@@ -13,7 +14,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 public class NetworkChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
-    public void initChannel(SocketChannel ch) throws Exception {
+    public void initChannel(SocketChannel ch) {
         ch.pipeline().addLast("logger", new LoggingHandler());
 
         ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(60, 30, 0));
