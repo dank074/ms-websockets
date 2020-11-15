@@ -1,18 +1,22 @@
-package com.krews.plugin.nitro.websockets.codec;
+package org.krews.plugin.nitro.websockets.codec;
 
 import com.eu.habbo.Emulator;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageDecoder;
-import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.handler.codec.http.websocketx.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-public class WebSocketFrameToHabboFrameDecoder extends MessageToMessageDecoder<WebSocketFrame> {
+public class WebSocketCodec extends MessageToMessageCodec<WebSocketFrame, ByteBuf> {
+    @Override
+    protected void encode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        out.add(new BinaryWebSocketFrame(in).retain());
+    }
+
     @Override
     protected void decode(ChannelHandlerContext ctx, WebSocketFrame in, List<Object> out) {
         out.add(in.content().retain());

@@ -1,4 +1,4 @@
-package com.krews.plugin.nitro;
+package org.krews.plugin.nitro;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -6,12 +6,12 @@ import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.EventListener;
 import com.eu.habbo.plugin.HabboPlugin;
 import com.eu.habbo.plugin.events.emulator.EmulatorLoadedEvent;
-import com.krews.plugin.nitro.websockets.NetworkChannelInitializer;
+import org.krews.plugin.nitro.websockets.NetworkChannelInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class main extends HabboPlugin implements EventListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Emulator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(main.class);
 
     public void onEnable() throws Exception {
         Emulator.getPluginManager().registerEvents(this, this);
@@ -29,7 +29,7 @@ public class main extends HabboPlugin implements EventListener {
     }
 
     @EventHandler
-    public void onEmulatorLoadedEvent (EmulatorLoadedEvent e) {
+    public void onEmulatorLoadedEvent (EmulatorLoadedEvent e) throws InterruptedException {
         //add missing db entry
         Emulator.getConfig().register("websockets.whitelist", "localhost");
         Emulator.getConfig().register("ws.nitro.host", "0.0.0.0");
@@ -37,7 +37,7 @@ public class main extends HabboPlugin implements EventListener {
 
         Emulator.getGameServer().getServerBootstrap().childHandler(new NetworkChannelInitializer());
 
-        Emulator.getGameServer().getServerBootstrap().bind(Emulator.getConfig().getValue("ws.nitro.host", "0.0.0.0"), Emulator.getConfig().getInt("ws.nitro.port", 2096)).syncUninterruptibly();
+        Emulator.getGameServer().getServerBootstrap().bind(Emulator.getConfig().getValue("ws.nitro.host", "0.0.0.0"), Emulator.getConfig().getInt("ws.nitro.port", 2096)).sync();
 
         LOGGER.info("OFFICIAL PLUGIN - Nitro Websockets has started!");
         LOGGER.info("Nitro Websockets Listening on " + Emulator.getConfig().getValue("ws.nitro.host", "0.0.0.0") + ":" + Emulator.getConfig().getInt("ws.nitro.port", 2096));

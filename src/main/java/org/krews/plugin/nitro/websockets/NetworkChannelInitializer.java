@@ -1,11 +1,11 @@
-package com.krews.plugin.nitro.websockets;
+package org.krews.plugin.nitro.websockets;
 
 import com.eu.habbo.messages.PacketManager;
 import com.eu.habbo.networking.gameserver.decoders.*;
 import com.eu.habbo.networking.gameserver.encoders.GameServerMessageEncoder;
 import com.eu.habbo.networking.gameserver.encoders.GameServerMessageLogger;
 import com.eu.habbo.networking.gameserver.handlers.IdleTimeoutHandler;
-import com.krews.plugin.nitro.websockets.handlers.MessageInterceptorHandler;
+import org.krews.plugin.nitro.websockets.handlers.MessageInterceptorHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.logging.LoggingHandler;
