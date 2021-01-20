@@ -6,12 +6,18 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 import io.netty.handler.codec.http.websocketx.*;
+import org.krews.plugin.nitro.main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
 public class WebSocketCodec extends MessageToMessageCodec<WebSocketFrame, ByteBuf> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketCodec.class);
+
     @Override
     protected void encode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         out.add(new BinaryWebSocketFrame(in).retain());
@@ -53,6 +59,7 @@ public class WebSocketCodec extends MessageToMessageCodec<WebSocketFrame, ByteBu
                 if(origin.equals(entry)) return true;
             }
         }
+        LOGGER.info("Origin not allowed: " + origin);
         return false;
     }
 }
