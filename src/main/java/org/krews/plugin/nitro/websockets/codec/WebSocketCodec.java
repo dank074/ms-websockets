@@ -59,7 +59,10 @@ public class WebSocketCodec extends MessageToMessageCodec<WebSocketFrame, ByteBu
                 if(origin.equals(entry)) return true;
             }
         }
-        LOGGER.info("Origin not allowed: " + origin);
+
+        if(Emulator.getConfig().getBoolean("debug.mode")) {
+            LOGGER.info("Origin not allowed: " + origin);
+        }
         return false;
     }
 }
