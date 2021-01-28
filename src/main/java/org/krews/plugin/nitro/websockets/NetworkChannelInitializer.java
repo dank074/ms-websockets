@@ -14,6 +14,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.krews.plugin.nitro.websockets.codec.WebSocketCodec;
+import org.krews.plugin.nitro.websockets.handlers.CustomHTTPHandler;
 import org.krews.plugin.nitro.websockets.ssl.SSLCertificateLoader;
 
 public class NetworkChannelInitializer extends ChannelInitializer<SocketChannel> {
@@ -37,6 +38,7 @@ public class NetworkChannelInitializer extends ChannelInitializer<SocketChannel>
         }
         ch.pipeline().addLast("httpCodec", new HttpServerCodec());
         ch.pipeline().addLast("objectAggregator", new HttpObjectAggregator(65536));
+        ch.pipeline().addLast("customHttpHandler", new CustomHTTPHandler());
         ch.pipeline().addLast("protocolHandler", new WebSocketServerProtocolHandler("/", true));
         ch.pipeline().addLast("websocketCodec", new WebSocketCodec());
 
