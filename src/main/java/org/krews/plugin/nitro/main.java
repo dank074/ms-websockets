@@ -35,11 +35,12 @@ public class main extends HabboPlugin implements EventListener {
         Emulator.getConfig().register("ws.nitro.host", "0.0.0.0");
         Emulator.getConfig().register("ws.nitro.port", "2096");
 
-        Emulator.getGameServer().getServerBootstrap().childHandler(new NetworkChannelInitializer());
+        NetworkChannelInitializer wsChannelHandler = new NetworkChannelInitializer();
+        Emulator.getGameServer().getServerBootstrap().childHandler(wsChannelHandler);
 
         Emulator.getGameServer().getServerBootstrap().bind(Emulator.getConfig().getValue("ws.nitro.host", "0.0.0.0"), Emulator.getConfig().getInt("ws.nitro.port", 2096)).sync();
 
         LOGGER.info("OFFICIAL PLUGIN - Nitro Websockets has started!");
-        LOGGER.info("Nitro Websockets Listening on " + Emulator.getConfig().getValue("ws.nitro.host", "0.0.0.0") + ":" + Emulator.getConfig().getInt("ws.nitro.port", 2096));
+        LOGGER.info("Nitro Websockets Listening on " + (wsChannelHandler.isSSL() ? "wss://" : "ws://") + Emulator.getConfig().getValue("ws.nitro.host", "0.0.0.0") + ":" + Emulator.getConfig().getInt("ws.nitro.port", 2096));
     }
 }
