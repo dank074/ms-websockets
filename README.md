@@ -33,5 +33,18 @@ After your port is set to one that is compatible, create a new A record for a su
 
 Finally, create a new page rule under the Page Rules tab in Cloudflare and disable SSL for the subdomain you created above. You will now be able to connect using secure websockets using the following example url, where I created an A record for the subdomain `ws` and I set my `ws.nitro.port` to 2096: `wss://ws.example.com:2096` 
 
+## FAQS ##
+**I am getting the error `Unable to load ssl: File does not contain valid private key: ssl\privkey.pem`**
+
+Make sure your private key is in PKCS#8 format. You can convert it to PKCS8 format with the following command:
+```
+openssl pkcs8 -topk8 -nocrypt -in yourkey.pem -out yournewkey.pem
+```
+
+
+**I am getting disconnected from the client with no error logs**
+
+Make sure your sso ticket is valid and that you didn't do an IP ban before configuring the `ws.nitro.ip.header` if you're behind a proxy.
+
 ## License ##
 This plugin is released under the GNU GPLv3
