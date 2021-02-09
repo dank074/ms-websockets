@@ -30,9 +30,6 @@ public class NetworkChannelInitializer extends ChannelInitializer<SocketChannel>
     public void initChannel(SocketChannel ch) {
         ch.pipeline().addLast("logger", new LoggingHandler());
 
-        ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(60, 30, 0));
-        ch.pipeline().addAfter("idleStateHandler", "idleEventHandler", new IdleTimeoutHandler());
-
         if(isSSL) {
             ch.pipeline().addLast(context.newHandler(ch.alloc()));
         }
@@ -51,6 +48,7 @@ public class NetworkChannelInitializer extends ChannelInitializer<SocketChannel>
             ch.pipeline().addLast(new GameClientMessageLogger());
         }
 
+        ch.pipeline().addLast("idleEventHandler", new IdleTimeoutHandler(30, 60));
         ch.pipeline().addLast(new GameMessageRateLimit());
         ch.pipeline().addLast(new GameMessageHandler());
 
