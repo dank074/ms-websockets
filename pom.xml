@@ -6,7 +6,7 @@
 
     <groupId>org.krews.plugin.nitro</groupId>
     <artifactId>NitroWebsockets</artifactId>
-    <version>3.0</version>
+    <version>3.1</version>
     <build>
         <plugins>
             <plugin>

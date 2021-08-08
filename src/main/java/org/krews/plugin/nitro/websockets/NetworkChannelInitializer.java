@@ -9,6 +9,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
@@ -18,12 +19,20 @@ import org.krews.plugin.nitro.websockets.handlers.CustomHTTPHandler;
 import org.krews.plugin.nitro.websockets.ssl.SSLCertificateLoader;
 
 public class NetworkChannelInitializer extends ChannelInitializer<SocketChannel> {
+    private static final int MAX_FRAME_SIZE = 500000;
+
     private final SslContext context;
     private final boolean isSSL;
+    private final WebSocketServerProtocolConfig config;
 
     public NetworkChannelInitializer() {
         context = SSLCertificateLoader.getContext();
         isSSL = context != null;
+        config = WebSocketServerProtocolConfig.newBuilder()
+                .websocketPath("/")
+                .checkStartsWith(true)
+                .maxFramePayloadLength(MAX_FRAME_SIZE)
+                .build();
     }
 
     @Override
@@ -34,9 +43,9 @@ public class NetworkChannelInitializer extends ChannelInitializer<SocketChannel>
             ch.pipeline().addLast(context.newHandler(ch.alloc()));
         }
         ch.pipeline().addLast("httpCodec", new HttpServerCodec());
-        ch.pipeline().addLast("objectAggregator", new HttpObjectAggregator(65536));
+        ch.pipeline().addLast("objectAggregator", new HttpObjectAggregator(MAX_FRAME_SIZE));
         ch.pipeline().addLast("customHttpHandler", new CustomHTTPHandler());
-        ch.pipeline().addLast("protocolHandler", new WebSocketServerProtocolHandler("/", true));
+        ch.pipeline().addLast("protocolHandler", new WebSocketServerProtocolHandler(config));
         ch.pipeline().addLast("websocketCodec", new WebSocketCodec());
 
         // Decoders.
